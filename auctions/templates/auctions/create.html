@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+<section class="container p-5">
+    <h2>Create new listing</h2>
+    
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form class="mt-4" action="{% url 'auctions:create' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="title" placeholder="Title">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="text" name="description" placeholder="Description">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="url" name="image_url" placeholder="Image URL">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" min="0" type="number" name="bid_price" placeholder="Bid Price">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Select Category:</label>
+            <select class="form-control" name="category" id="category">
+                {% for category in categories  %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <input class="btn btn-info" type="submit" value="Create">
+    </form>
+</section>
+
+{% endblock %}

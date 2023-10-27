@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<section class="container">
+    <h4>Categories</h4>
+    <form method="POST" action="{% url 'auctions:categories' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="category">Select category to filter:</label>
+            <select class="form-control" name="category" id="category">
+                {% for category in categories  %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <input class="btn btn-info" type="submit" value="Filter">
+    </form>
+</section>
+<section class="container">
+    <hr/>
+    
+    {% if category %}
+        <h5>{{ category }} listings</h5>
+    {% endif %}
+
+    <div class="row mt-4">
+        {% for listing in listings  %}        
+            <div class="col-md-4 mx-auto">
+                <div class="card">
+                    <img src={{ listing.image_url }} class="card-img-top" alt="Listing Image">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-around">
+                            <a href="{% url "auctions:listing" listing.id %}" class="card-title h5">{{ listing.title }}</a>
+                            <h6 class="pt-1 text-success">Starting price: ₦<strong>{{ listing.bid_price }}</strong></h6>
+                        </div>
+                        <p class="card-text text-center">{{ listing.desc }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No Listings</p>
+        {% endfor %}
+    </div>
+
+</section>
+
+{% endblock %}
